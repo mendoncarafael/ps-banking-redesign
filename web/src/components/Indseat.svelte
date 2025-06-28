@@ -11,8 +11,28 @@
     Currency,
   } from "../store/data";
 
-  let depositAmount = writable($currentCash);
+  let depositAmount = writable(0);
   $: newBank = $bankBalance + $depositAmount;
+
+  async function updateBalances() {
+    try {
+      const response = await fetchNui("ps-banking:client:getMoneyTypes", {});
+      const bank = response.find(
+        (item: { name: string }) => item.name === "bank"
+      );
+      const cash = response.find(
+        (item: { name: string }) => item.name === "cash"
+      );
+      if (bank) {
+        bankBalance.set(bank.amount);
+      }
+      if (cash) {
+        currentCash.set(cash.amount);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function handleDeposit() {
     if ($currentCash < $depositAmount) {
@@ -29,24 +49,34 @@
         "coins"
       );
     } else {
-      Notify(
-        `${$Locales.deposit_success} ${$depositAmount.toLocaleString(
-          $Currency.lang,
-          {
-            style: "currency",
-            currency: $Currency.currency,
-            minimumFractionDigits: 0,
-          }
-        )}`,
-        $Locales.deposit_success,
-        "coins"
-      );
-      await fetchNui("ps-banking:client:ATMdeposit", {
+      const response = await fetchNui("ps-banking:client:ATMdeposit", {
         amount: $depositAmount,
       });
-      currentCash.update((cash) => cash - $depositAmount);
-      bankBalance.update((balance) => balance + $depositAmount);
-      depositAmount.set(0);
+      
+      if (response) {
+        Notify(
+          `${$Locales.deposit_success} ${$depositAmount.toLocaleString(
+            $Currency.lang,
+            {
+              style: "currency",
+              currency: $Currency.currency,
+              minimumFractionDigits: 0,
+            }
+          )}`,
+          $Locales.deposit_success,
+          "coins"
+        );
+        
+        // Update balances from server to ensure accuracy
+        await updateBalances();
+        depositAmount.set(0);
+      } else {
+        Notify(
+          `${$Locales.deposit_error}`,
+          $Locales.error,
+          "coins"
+        );
+      }
     }
   }
 </script>

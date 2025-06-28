@@ -11,8 +11,28 @@
     Currency,
   } from "../store/data";
 
-  let withdrawAmount = writable($bankBalance);
+  let withdrawAmount = writable(0);
   $: newBank = $bankBalance - $withdrawAmount;
+
+  async function updateBalances() {
+    try {
+      const response = await fetchNui("ps-banking:client:getMoneyTypes", {});
+      const bank = response.find(
+        (item: { name: string }) => item.name === "bank"
+      );
+      const cash = response.find(
+        (item: { name: string }) => item.name === "cash"
+      );
+      if (bank) {
+        bankBalance.set(bank.amount);
+      }
+      if (cash) {
+        currentCash.set(cash.amount);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function handleWithdraw() {
     if ($bankBalance < $withdrawAmount) {
@@ -29,24 +49,34 @@
         "coins"
       );
     } else {
-      Notify(
-        `${$Locales.withdraw_success} ${$withdrawAmount.toLocaleString(
-          $Currency.lang,
-          {
-            style: "currency",
-            currency: $Currency.currency,
-            minimumFractionDigits: 0,
-          }
-        )}`,
-        $Locales.withdraw_success,
-        "coins"
-      );
-      await fetchNui("ps-banking:client:ATMwithdraw", {
+      const response = await fetchNui("ps-banking:client:ATMwithdraw", {
         amount: $withdrawAmount,
       });
-      currentCash.update((cash) => cash + $withdrawAmount);
-      bankBalance.update((balance) => balance - $withdrawAmount);
-      withdrawAmount.set(0);
+      
+      if (response) {
+        Notify(
+          `${$Locales.withdraw_success} ${$withdrawAmount.toLocaleString(
+            $Currency.lang,
+            {
+              style: "currency",
+              currency: $Currency.currency,
+              minimumFractionDigits: 0,
+            }
+          )}`,
+          $Locales.withdraw_success,
+          "coins"
+        );
+        
+        // Update balances from server to ensure accuracy
+        await updateBalances();
+        withdrawAmount.set(0);
+      } else {
+        Notify(
+          `${$Locales.withdraw_error}`,
+          $Locales.error,
+          "coins"
+        );
+      }
     }
   }
 </script>

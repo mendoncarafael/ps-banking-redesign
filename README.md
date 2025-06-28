@@ -28,27 +28,23 @@ Compatible with QBCore and ESX.
 # Features
 ### Overview Tab:
 Includes all essential features such as managing your bills, withdrawing all money, depositing cash, transferring money weekly via Simmy, viewing the latest transactions, and handling unpaid invoices.
-![image](https://github.com/user-attachments/assets/7f22afa7-f4d8-427a-b9eb-42ef8b660801)
+![image](https://cdn.discordapp.com/attachments/1081766623632949258/1388379912741720124/image.png?ex=6860c50e&is=685f738e&hm=a1752c1b47e272c60586855c456f3b15c9abf5edaa5fb79551fd1827ac874c8b&)
 
 ### Bills
 Enables you to send and receive bills.
-![image](https://github.com/user-attachments/assets/6d51ffb3-992c-4032-986c-c033c694302a)
+![image](https://cdn.discordapp.com/attachments/1081766623632949258/1388380376304582866/image.png?ex=6860c57c&is=685f73fc&hm=e1d7fb6e7e6869e4327a1a2e9d9f13c56a1e2f8dbe0f5423980702935ffb3063&)
 
 ### History
 Displays a history of all transactions with options to delete specific transactions.
-![image](https://github.com/user-attachments/assets/7beabc27-304a-402b-89e4-7d338140e498)
-
-### Stats and Reports
-Provides a summary of all transactions made, including total amounts, current balance, and transaction trends by date and amount.
-![image](https://github.com/user-attachments/assets/879f0a59-818d-4a4e-a204-c1be4fc22057)
+![image](https://cdn.discordapp.com/attachments/1081766623632949258/1388380433523408896/image.png?ex=6860c58a&is=685f740a&hm=62cb3e7ba04b9ec26025862ce681f148ca564e3b61f15eeb5f30ea14e261aab9&)
 
 ### Accounts
 Allows you to create, add, or remove accounts, rename accounts, and perform deposits or withdrawals from specific accounts.
-![image](https://github.com/user-attachments/assets/3ec1d109-1346-4148-aa17-f869972f2001)
+![image](https://cdn.discordapp.com/attachments/1081766623632949258/1388380574632251452/image.png?ex=6860c5ab&is=685f742b&hm=f7376fca94ab4d3d404c9ce729e47748e9f60244b0743e49b90f88eed4b866ea&)
 
 ### ATM Access
 Deposit and withdraw from ATMs.
-![image](https://github.com/user-attachments/assets/49c135aa-295c-40ed-aa15-962a939e36ae)
+![image](https://cdn.discordapp.com/attachments/1081766623632949258/1388382644907151462/image.png?ex=6860c799&is=685f7619&hm=e291e94f1fdad3aed7ae53c551e3fad50c4079a77f9d5797a4d610aae12aed6d&)
 
 # Credits
 * [BachPB](https://github.com/BachPB)

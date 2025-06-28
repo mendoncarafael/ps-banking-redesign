@@ -20,7 +20,9 @@
   let customWithdraw = writable(0);
   let customDeposit = writable(0);
 
-  $: (customDeposit = currentCash), (customWithdraw = bankBalance);
+  // Initialize custom amounts but don't auto-update them
+  $: if ($customDeposit === 0) customDeposit.set($currentCash);
+  // Remove auto-update for customWithdraw to prevent showing wrong balance after withdrawal
 
   async function getAmountPresets() {
     try {
@@ -58,27 +60,20 @@
     try {
       if (amount <= 0 || amount > $bankBalance) return;
       
-      // Update balances immediately for better UX
-      bankBalance.update(n => n - amount);
-      currentCash.update(n => n + amount);
-      
       const response = await fetchNui("ps-banking:client:ATMwithdraw", {
         amount: amount,
       });
       
-      if (!response) {
-        // Revert changes if transaction failed
-        bankBalance.update(n => n + amount);
-        currentCash.update(n => n - amount);
+      if (response) {
+        // Only update balances if transaction was successful
+        // Update balances from server to ensure accuracy
+        await updateBalances();
+        
+        // Reset custom amount
+        customWithdraw.set(0);
       }
-      
-      // Reset custom amount
-      customWithdraw.set(0);
     } catch (error) {
       console.error(error);
-      // Revert changes on error
-      bankBalance.update(n => n + amount);
-      currentCash.update(n => n - amount);
     }
   }
 
@@ -86,27 +81,20 @@
     try {
       if (amount <= 0 || amount > $currentCash) return;
       
-      // Update balances immediately for better UX
-      currentCash.update(n => n - amount);
-      bankBalance.update(n => n + amount);
-      
       const response = await fetchNui("ps-banking:client:ATMdeposit", {
         amount: amount,
       });
       
-      if (!response) {
-        // Revert changes if transaction failed
-        currentCash.update(n => n + amount);
-        bankBalance.update(n => n - amount);
+      if (response) {
+        // Only update balances if transaction was successful
+        // Update balances from server to ensure accuracy
+        await updateBalances();
+        
+        // Reset custom amount
+        customDeposit.set(0);
       }
-      
-      // Reset custom amount
-      customDeposit.set(0);
     } catch (error) {
       console.error(error);
-      // Revert changes on error
-      currentCash.update(n => n + amount);
-      bankBalance.update(n => n - amount);
     }
   }
 
@@ -145,7 +133,7 @@
 <svelte:window on:keydown={handleKeydown}/>
 
 {#if $showATM}
-  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50">
+  <div class="fixed inset-0  z-50">
     <div class="absolute w-screen h-screen flex items-center justify-center">
       <div
         class="w-[500px] bg-[#1a1a1a] rounded-xl overflow-hidden border border-white/5 shadow-xl"
