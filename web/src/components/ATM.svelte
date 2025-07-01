@@ -136,12 +136,12 @@
   <div class="fixed inset-0  z-50">
     <div class="absolute w-screen h-screen flex items-center justify-center">
       <div
-        class="w-[650px] bg-[#1a1a1a] rounded-xl overflow-hidden border border-white/5 shadow-xl"
+        class="w-[650px] modern-card overflow-hidden"
         in:fade={{ duration: 200 }}
         out:fade={{ duration: 150 }}
       >
         <!-- Header -->
-        <div class="p-4 border-b border-white/5 flex items-center justify-between">
+        <div class="p-4 border-b border-white/10 flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center">
               <i class="fas fa-credit-card text-white text-lg"></i>
@@ -162,7 +162,7 @@
         <div class="p-4 space-y-4">
           <!-- Balance Cards -->
           <div class="grid grid-cols-2 gap-4">
-            <div class="bg-[#1e1e1e] rounded-lg p-4">
+            <div class="bg-black/20 border border-white/10 rounded-lg p-4">
               <div class="flex items-center space-x-2 mb-1">
                 <i class="fas fa-wallet text-green-400 text-lg"></i>
                 <span class="text-white/80">{$Locales.cash}</span>
@@ -172,7 +172,7 @@
               </p>
             </div>
 
-            <div class="bg-[#1e1e1e] rounded-lg p-4">
+            <div class="bg-black/20 border border-white/10 rounded-lg p-4">
               <div class="flex items-center space-x-2 mb-1">
                 <i class="fas fa-university text-blue-400 text-lg"></i>
                 <span class="text-white/80">{$Locales.bank_balance}</span>
@@ -187,7 +187,7 @@
           <div class="grid grid-cols-3 gap-2">
             {#each $withdrawAmounts as amount}
               <button
-                class="bg-[#1e1e1e] hover:bg-[#252525] transition-colors rounded-lg p-3 text-center group relative overflow-hidden"
+                class="bg-black/20 border border-white/10 hover:bg-white/5 transition-colors rounded-lg p-3 text-center group relative overflow-hidden"
                 on:click={() => heav(amount)}
               >
                 <div class="absolute inset-0 bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -200,7 +200,7 @@
           <div class="grid grid-cols-3 gap-2">
             {#each $depositAmounts as amount}
               <button
-                class="bg-[#1e1e1e] hover:bg-[#252525] transition-colors rounded-lg p-3 text-center group relative overflow-hidden"
+                class="bg-black/20 border border-white/10 hover:bg-white/5 transition-colors rounded-lg p-3 text-center group relative overflow-hidden"
                 on:click={() => deposit(amount)}
               >
                 <div class="absolute inset-0 bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -212,7 +212,7 @@
 
           <!-- Custom Amount Inputs -->
           <div class="grid grid-cols-2 gap-4">
-            <div class="bg-[#1e1e1e] rounded-lg p-4">
+            <div class="bg-black/20 border border-white/10 rounded-lg p-4">
               <div class="flex items-center space-x-2 mb-2">
                 <i class="fas fa-arrow-down text-red-400"></i>
                 <span class="text-white/80">{$Locales.withdraw_amount}</span>
@@ -221,7 +221,7 @@
                 <input
                   type="number"
                   bind:value={$customWithdraw}
-                  class="w-full bg-[#252525] text-white px-3 py-2 rounded-lg border border-white/5 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-red-500/20"
+                  class="w-full bg-black/30 text-white px-3 py-2 rounded-lg border border-white/10 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-red-500/20"
                   placeholder={$Locales.enter_amount}
                   min="0"
                   max={$bankBalance}
@@ -237,7 +237,7 @@
               </div>
             </div>
 
-            <div class="bg-[#1e1e1e] rounded-lg p-4">
+            <div class="bg-black/20 border border-white/10 rounded-lg p-4">
               <div class="flex items-center space-x-2 mb-2">
                 <i class="fas fa-arrow-up text-green-400"></i>
                 <span class="text-white/80">{$Locales.deposit_amount}</span>
@@ -246,7 +246,7 @@
                 <input
                   type="number"
                   bind:value={$customDeposit}
-                  class="w-full bg-[#252525] text-white px-3 py-2 rounded-lg border border-white/5 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-green-500/20"
+                  class="w-full bg-black/30 text-white px-3 py-2 rounded-lg border border-white/10 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-green-500/20"
                   placeholder={$Locales.enter_amount}
                   min="0"
                   max={$currentCash}
