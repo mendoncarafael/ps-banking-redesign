@@ -136,7 +136,7 @@
   <div class="fixed inset-0  z-50">
     <div class="absolute w-screen h-screen flex items-center justify-center">
       <div
-        class="w-[500px] bg-[#1a1a1a] rounded-xl overflow-hidden border border-white/5 shadow-xl"
+        class="w-[650px] bg-[#1a1a1a] rounded-xl overflow-hidden border border-white/5 shadow-xl"
         in:fade={{ duration: 200 }}
         out:fade={{ duration: 150 }}
       >
@@ -227,7 +227,7 @@
                   max={$bankBalance}
                 />
                 <button
-                  class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 transition-colors rounded-lg text-white relative overflow-hidden group"
+                  class="px-6 py-2 bg-red-500/20 hover:bg-red-500/30 transition-colors rounded-lg text-white relative overflow-hidden group flex items-center justify-center text-center min-w-[100px]"
                   on:click={() => heav($customWithdraw)}
                   disabled={$customWithdraw <= 0 || $customWithdraw > $bankBalance}
                 >
@@ -252,7 +252,7 @@
                   max={$currentCash}
                 />
                 <button
-                  class="px-4 py-2 bg-green-500/20 hover:bg-green-500/30 transition-colors rounded-lg text-white relative overflow-hidden group"
+                  class="px-6 py-2 bg-green-500/20 hover:bg-green-500/30 transition-colors rounded-lg text-white relative overflow-hidden group flex items-center justify-center text-center min-w-[100px]"
                   on:click={() => deposit($customDeposit)}
                   disabled={$customDeposit <= 0 || $customDeposit > $currentCash}
                 >

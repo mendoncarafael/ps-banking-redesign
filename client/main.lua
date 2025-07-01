@@ -9,15 +9,15 @@ RegisterNUICallback("ps-banking:client:hideUI", function(_, cb)
     cb({})
 end)
 
-RegisterNUICallback("ps-banking:client:phoneOption", function(_, cb)
-    cb(Config.LBPhone)
-end)
-
 RegisterNUICallback("ps-banking:client:getColorConfig", function(_, cb)
     local inventoryColor = GetConvar("inventory:color", "#43c42f") -- Default to green-500 if not set
     cb({
         color = inventoryColor
     })
+end)
+
+RegisterNUICallback("ps-banking:client:phoneOption", function(_, cb)
+    cb(Config.LBPhone)
 end)
 
 -- Banks
@@ -128,14 +128,13 @@ Citizen.CreateThread(function()
             exports.interact:AddModelInteraction({
                 model = ATM_Models,
                 offset = vec3(0.0, 0.0, 1.0),
-                
                 name = locale("openATM") .. "interact:name",
                 id = locale("openATM") .. "interact",
                 distance = 2.5,
                 interactDst = 2.5,
                 options = {
                     {
-                        icon = "fas fa-solid fa-money-bills",
+                        icon = "fas fa-credit-card",
                         label = locale("openATM"),
                         event = "ps-banking:client:open:atm",
                     },
@@ -369,3 +368,37 @@ RegisterNUICallback("ps-banking:client:getAmountPresets", function(_, cb)
         grid = Config.PresetATM_Amounts.Grid,
     }))
 end)
+
+AddEventHandler('onResourceStart', function(resource)
+   if resource ~= GetCurrentResourceName() then return end
+
+   local success = lib.callback.await("ps-banking:server:createSocietyAccount", false)
+   if not success then
+       print("Failed to create society account")
+   else
+       print("Society account created")
+   end
+end)
+
+RegisterNetEvent(
+    "QBCore:Client:OnPlayerLoaded",
+    function()
+        local PlayerData = QBCore.Functions.GetPlayerData()
+        lib.callback.await("ps-banking:server:playerGroupInfo", false, PlayerData.job, true)
+        lib.callback.await("ps-banking:server:playerGroupInfo", false, PlayerData.gang, false)
+    end
+)
+
+RegisterNetEvent(
+    "QBCore:Client:OnJobUpdate",
+    function(data)
+        lib.callback.await("ps-banking:server:playerGroupInfo", false, data, true)
+    end
+)
+
+RegisterNetEvent(
+    "QBCore:Client:OnGangUpdate",
+    function(data)
+        lib.callback.await("ps-banking:server:playerGroupInfo", false, data, false)
+    end
+)
