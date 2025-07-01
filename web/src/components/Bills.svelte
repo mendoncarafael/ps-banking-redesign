@@ -71,13 +71,13 @@
   <div class="flex items-center justify-between mb-8">
     <div>
       <h1 class="text-3xl font-bold text-white mb-2">{$Locales.bills}</h1>
-      <p class="text-white/60">Manage your pending bills and payments</p>
+      <p class="text-white/60">{$Locales.manage_pending_bills_payments}</p>
     </div>
     <div class="flex items-center space-x-4">
       <div class="modern-card px-4 py-2">
         <div class="flex items-center space-x-2">
           <i class="fas fa-file-invoice text-yellow-400"></i>
-          <span class="text-sm text-white/80">{$transactions.length} Bills</span>
+          <span class="text-sm text-white/80">{$transactions.length} {$Locales.bills_count}</span>
         </div>
       </div>
     </div>
@@ -149,7 +149,7 @@
                 </button>
               {:else}
                 <div class="px-4 py-2 bg-green-500/20 rounded-lg border border-green-500/30">
-                  <span class="text-green-400 text-sm font-medium">Paid</span>
+                  <span class="text-green-400 text-sm font-medium">{$Locales.paid}</span>
                 </div>
               {/if}
             </div>
@@ -159,9 +159,9 @@
     {:else}
       <div class="modern-card p-12 text-center">
         <i class="fas fa-file-invoice text-white/30 text-5xl mb-4"></i>
-        <h3 class="text-xl font-semibold text-white mb-2">No Bills Found</h3>
+        <h3 class="text-xl font-semibold text-white mb-2">{$Locales.no_bills_found}</h3>
         <p class="text-white/60">
-          {$searchQuery ? 'No bills match your search criteria.' : 'You have no pending bills at the moment.'}
+          {$searchQuery ? $Locales.no_bills_match_search : $Locales.no_pending_bills_moment}
         </p>
       </div>
     {/if}

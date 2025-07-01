@@ -147,8 +147,8 @@
               <i class="fas fa-credit-card text-white text-lg"></i>
             </div>
             <div>
-              <h1 class="text-lg font-semibold text-white">{$Locales.atm}</h1>
-              <p class="text-sm text-white/50">Gerenciamento Rápido</p>
+                    <h1 class="text-lg font-semibold text-white">{$Locales.atm}</h1>
+      <p class="text-sm text-white/50">{$Locales.quick_management}</p>
             </div>
           </div>
           <button
@@ -222,7 +222,7 @@
                   type="number"
                   bind:value={$customWithdraw}
                   class="w-full bg-[#252525] text-white px-3 py-2 rounded-lg border border-white/5 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-red-500/20"
-                  placeholder="0"
+                  placeholder={$Locales.enter_amount}
                   min="0"
                   max={$bankBalance}
                 />
@@ -247,7 +247,7 @@
                   type="number"
                   bind:value={$customDeposit}
                   class="w-full bg-[#252525] text-white px-3 py-2 rounded-lg border border-white/5 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-green-500/20"
-                  placeholder="0"
+                  placeholder={$Locales.enter_amount}
                   min="0"
                   max={$currentCash}
                 />

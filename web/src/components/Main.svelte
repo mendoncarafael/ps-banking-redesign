@@ -67,7 +67,7 @@
     { key: 'history', icon: 'clock-rotate-left', label: 'history' },
     { key: 'withdraw', icon: 'arrow-down', label: 'withdraw' },
     { key: 'deposit', icon: 'arrow-up', label: 'deposit' },
-    { key: 'accounts', icon: 'users', label: 'accounts' }
+    { key: 'accounts', icon: 'piggy-bank', label: 'accounts' }
   ];
 
   function setActiveView(view) {
@@ -121,7 +121,7 @@
         <div class="p-6 border-b border-white/10">
           <div class="flex items-center space-x-3">
             <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center">
-              <i class="fas fa-university text-white text-xl"></i>
+              <i class="fas fa-piggy-bank text-white text-xl"></i>
             </div>
             <div>
               <h1 class="text-xl font-bold text-white">Banco</h1>

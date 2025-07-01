@@ -74,13 +74,13 @@
   <div class="flex items-center justify-between mb-8">
     <div>
       <h1 class="text-3xl font-bold text-white mb-2">{$Locales.history}</h1>
-      <p class="text-white/60">View your complete transaction history</p>
+      <p class="text-white/60">{$Locales.view_complete_transaction_history}</p>
     </div>
     <div class="flex items-center space-x-4">
       <div class="modern-card px-4 py-2">
         <div class="flex items-center space-x-2">
           <i class="fas fa-receipt text-blue-400"></i>
-          <span class="text-sm text-white/80">{filteredTransactions.length} Transactions</span>
+          <span class="text-sm text-white/80">{filteredTransactions.length} {$Locales.transactions_count}</span>
         </div>
       </div>
       <button
@@ -155,7 +155,7 @@
                 {/if}
               </span>
               <div class="text-xs text-white/50 mt-1">
-                {transaction.isIncome ? 'Received' : 'Sent'}
+                {transaction.isIncome ? $Locales.received : $Locales.sent}
               </div>
             </div>
           </div>
@@ -164,9 +164,9 @@
     {:else}
       <div class="modern-card p-12 text-center">
         <i class="fas fa-history text-white/30 text-5xl mb-4"></i>
-        <h3 class="text-xl font-semibold text-white mb-2">No Transactions Found</h3>
+        <h3 class="text-xl font-semibold text-white mb-2">{$Locales.no_transactions_found}</h3>
         <p class="text-white/60">
-          {$searchQuery ? 'No transactions match your search criteria.' : 'Your transaction history is empty.'}
+          {$searchQuery ? $Locales.no_transactions_match_search : $Locales.transaction_history_empty}
         </p>
       </div>
     {/if}
@@ -207,7 +207,7 @@
           on:click={deleteAllTransactions}
         >
           <i class="fas fa-trash mr-2"></i>
-          Delete All
+          {$Locales.delete_all}
         </button>
       </div>
     </div>

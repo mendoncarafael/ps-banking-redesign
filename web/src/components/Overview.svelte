@@ -252,14 +252,14 @@
   <!-- Page Header -->
   <div class="flex items-center justify-between mb-8">
     <div>
-      <h1 class="text-3xl font-bold text-white mb-2">Overview</h1>
-      <p class="text-white/60">Your financial summary and quick actions</p>
+      <h1 class="text-3xl font-bold text-white mb-2">{$Locales.overview}</h1>
+      <p class="text-white/60">{$Locales.financial_summary_quick_actions}</p>
     </div>
     <div class="flex items-center space-x-4">
       <div class="modern-card px-4 py-2">
         <div class="flex items-center space-x-2">
           <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-          <span class="text-sm text-white/80">Live</span>
+          <span class="text-sm text-white/80">{$Locales.live}</span>
         </div>
       </div>
     </div>
@@ -414,7 +414,7 @@
             <div class="flex items-center justify-between p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
               <div class="flex-1">
                 <p class="text-white/90 text-sm font-medium truncate">{transaction.description}</p>
-                <p class="text-white/50 text-xs">Transaction</p>
+                <p class="text-white/50 text-xs">{$Locales.transaction}</p>
               </div>
               <div class="text-right">
                 <span class={`font-semibold ${transaction.isIncome ? "text-green-400" : "text-red-400"}`}>

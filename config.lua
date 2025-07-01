@@ -20,7 +20,7 @@ Config.BankLocations = {
         vector3(-111.98, 6470.56, 31.63),
     },
     Blips = {
-        name = "Bank",
+        name = "Banco",
         sprite = 108,
         color = 2,
         scale = 0.55,

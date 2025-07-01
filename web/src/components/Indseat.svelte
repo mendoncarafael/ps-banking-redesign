@@ -86,13 +86,13 @@
   <div class="flex items-center justify-between mb-8">
     <div>
       <h1 class="text-3xl font-bold text-white mb-2">{$Locales.deposit}</h1>
-      <p class="text-white/60">Deposit cash into your bank account</p>
+      <p class="text-white/60">{$Locales.deposit_cash_into_account}</p>
     </div>
     <div class="flex items-center space-x-4">
       <div class="modern-card px-4 py-2">
         <div class="flex items-center space-x-2">
           <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-          <span class="text-sm text-white/80">Deposit</span>
+          <span class="text-sm text-white/80">{$Locales.deposit_status}</span>
         </div>
       </div>
     </div>
@@ -109,7 +109,7 @@
               <i class="fas fa-wallet text-green-400 text-lg"></i>
             </div>
             <div>
-              <p class="text-white/60 text-sm">Cash on Hand</p>
+              <p class="text-white/60 text-sm">{$Locales.cash_on_hand}</p>
               <p class="text-2xl font-bold text-white">
                 {#if $currentCash >= 1000000}
                   R$ {($currentCash / 1000000).toFixed(1)}M
@@ -134,7 +134,7 @@
           <input
             type="number"
             class="w-full bg-white/5 text-white text-xl font-semibold pl-12 pr-4 py-4 rounded-xl border border-white/10 focus:outline-none focus:border-green-500/50 transition-colors"
-            placeholder="Enter amount"
+            placeholder={$Locales.enter_amount}
             bind:value={$depositAmount}
             max={$currentCash}
             min="0"
@@ -165,7 +165,7 @@
             class="px-3 py-2 bg-white/5 rounded-lg text-white/70 hover:bg-white/10 transition-colors text-sm"
             on:click={() => depositAmount.set($currentCash)}
           >
-            All
+            {$Locales.all}
           </button>
         </div>
       </div>
@@ -178,7 +178,7 @@
               <i class="fas fa-university text-blue-400 text-lg"></i>
             </div>
             <div>
-              <p class="text-white/60 text-sm">New Bank Balance</p>
+              <p class="text-white/60 text-sm">{$Locales.new_bank_balance}</p>
               <p class="text-2xl font-bold text-white">
                 {#if newBank >= 1000000}
                   R$ {(newBank / 1000000).toFixed(1)}M
@@ -191,7 +191,7 @@
             </div>
           </div>
           <div class="text-right">
-            <p class="text-white/60 text-sm">Depositing</p>
+            <p class="text-white/60 text-sm">{$Locales.depositing}</p>
             <p class="text-xl font-bold text-green-400">
                               {#if $depositAmount >= 1000000}
                   R$ {($depositAmount / 1000000).toFixed(1)}M

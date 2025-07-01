@@ -37,7 +37,7 @@ Citizen.CreateThread(function()
                 options = {
                      {
                         icon = "fas fa-credit-card",
-                        label = 'Acessar Banco',
+                        label = locale("openBank"),
                         action = function()
                             SendNUIMessage({
                                 action = "openBank",

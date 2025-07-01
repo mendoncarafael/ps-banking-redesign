@@ -68,7 +68,7 @@
           
           // Safely extract and validate fields
           const id = account.id ? account.id.toString() : `temp_${index}`;
-          const holder = account.holder && typeof account.holder === 'string' ? account.holder : 'Unknown Account';
+          const holder = account.holder && typeof account.holder === 'string' ? account.holder : $Locales.unknown_account;
           const balance = typeof account.balance === 'number' ? account.balance : 0;
           
           // Safely extract account type from owner metadata
@@ -98,7 +98,7 @@
           try {
             if (account.owner && typeof account.owner === 'object') {
               owner = {
-                name: account.owner.name || 'Unknown',
+                name: account.owner.name || $Locales.unknown,
                 identifier: account.owner.identifier || '',
                 state: account.owner.state || false
               };
@@ -127,14 +127,14 @@
       safeSetAccounts(transformedAccounts);
       } catch (error) {
         console.error("Error fetching accounts:", error);
-        Notify("Failed to fetch accounts", $Locales.error, "user");
+        Notify($Locales.failed_fetch_accounts, $Locales.error, "user");
         safeSetAccounts([]); // Set empty array on error
     }
   }
 
   async function createAccount() {
     if (!$newAccountName.trim()) {
-      Notify("Please enter an account name", $Locales.error, "user");
+      Notify($Locales.please_enter_account_name, $Locales.error, "user");
       return;
     }
 
@@ -142,7 +142,7 @@
       // Get user information first
       const user = await fetchNui("ps-banking:client:getUser", {});
       if (!user) {
-        Notify("Failed to get user information", $Locales.error, "user");
+        Notify($Locales.failed_get_user_info, $Locales.error, "user");
         return;
       }
 
@@ -168,18 +168,18 @@
       console.log("Create account result:", result); // Debug log
       
       if (result && result.success) {
-        Notify("Account created successfully!", $Locales.success, "user");
+        Notify($Locales.account_created_success, $Locales.success, "user");
         showCreateModal.set(false);
         newAccountName.set("");
         newAccountType.set("savings");
         fetchAccounts();
       } else {
         console.error("Failed to create account:", result); // Debug log
-        Notify("Failed to create account", $Locales.error, "user");
+        Notify($Locales.failed_create_account, $Locales.error, "user");
       }
     } catch (error) {
       console.error(error);
-      Notify("Failed to create account", $Locales.error, "user");
+      Notify($Locales.failed_create_account, $Locales.error, "user");
     }
   }
 
@@ -190,20 +190,20 @@
       });
       
       if (result && result.success) {
-        Notify("Account deleted successfully!", $Locales.success, "user");
+        Notify($Locales.account_deleted_success, $Locales.success, "user");
         fetchAccounts();
       } else {
-        Notify("Failed to delete account", $Locales.error, "user");
+        Notify($Locales.failed_delete_account, $Locales.error, "user");
       }
     } catch (error) {
       console.error(error);
-      Notify("Failed to delete account", $Locales.error, "user");
+      Notify($Locales.failed_delete_account, $Locales.error, "user");
     }
   }
 
   async function depositToAccount() {
     if (!$selectedAccountForDeposit || $depositAmount <= 0) {
-      Notify("Please enter a valid amount", $Locales.error, "user");
+      Notify($Locales.please_enter_valid_amount, $Locales.error, "user");
       return;
     }
 
@@ -214,7 +214,7 @@
       });
 
       if (result && result.success) {
-        Notify(`Deposited $${$depositAmount.toLocaleString()} successfully!`, $Locales.success, "user");
+        Notify(`R$ ${$depositAmount.toLocaleString()} ${$Locales.deposited_successfully}`, $Locales.success, "user");
         showDepositModal.set(false);
         depositAmount.set(0);
         selectedAccountForDeposit.set(null);
@@ -222,17 +222,17 @@
         // Refresh money types to update bank balance
         updateMoneyTypes();
       } else {
-        Notify("Insufficient funds or deposit failed", $Locales.error, "user");
+        Notify($Locales.insufficient_funds_deposit, $Locales.error, "user");
       }
     } catch (error) {
       console.error(error);
-      Notify("Failed to deposit to account", $Locales.error, "user");
+      Notify($Locales.failed_deposit_account, $Locales.error, "user");
     }
   }
 
   async function withdrawFromAccount() {
     if (!$selectedAccountForWithdraw || $withdrawAmount <= 0) {
-      Notify("Please enter a valid amount", $Locales.error, "user");
+      Notify($Locales.please_enter_valid_amount, $Locales.error, "user");
       return;
     }
 
@@ -243,7 +243,7 @@
       });
 
       if (result && result.success) {
-        Notify(`Withdrew $${$withdrawAmount.toLocaleString()} successfully!`, $Locales.success, "user");
+        Notify(`R$ ${$withdrawAmount.toLocaleString()} ${$Locales.withdrew_successfully}`, $Locales.success, "user");
         showWithdrawModal.set(false);
         withdrawAmount.set(0);
         selectedAccountForWithdraw.set(null);
@@ -251,31 +251,31 @@
         // Refresh money types to update bank balance
         updateMoneyTypes();
       } else {
-        Notify("Insufficient funds in account", $Locales.error, "user");
+        Notify($Locales.insufficient_funds_account, $Locales.error, "user");
       }
     } catch (error) {
       console.error(error);
-      Notify("Failed to withdraw from account", $Locales.error, "user");
+      Notify($Locales.failed_withdraw_account, $Locales.error, "user");
     }
   }
 
   async function addUserToAccount() {
     // Validate inputs with proper type checking
     if (!$selectedAccountForUser || !$userIdToAdd) {
-      Notify("Please enter a valid user ID", $Locales.error, "user");
+      Notify($Locales.please_enter_valid_user_id, $Locales.error, "user");
       return;
     }
 
     // Convert to string and trim safely
     const userIdString = String($userIdToAdd || '').trim();
     if (!userIdString) {
-      Notify("Please enter a valid user ID", $Locales.error, "user");
+      Notify($Locales.please_enter_valid_user_id, $Locales.error, "user");
       return;
     }
 
     const playerId = parseInt(userIdString);
     if (isNaN(playerId) || playerId <= 0) {
-      Notify("Please enter a valid numeric player ID", $Locales.error, "user");
+      Notify($Locales.please_enter_valid_numeric_player_id, $Locales.error, "user");
       return;
     }
 
@@ -300,20 +300,20 @@
       if (result && typeof result === 'object') {
         if (result.success === true) {
           const userName = result.userName || "Player";
-          Notify(`${userName} added to account successfully!`, $Locales.success, "user");
+          Notify(`${userName} ${$Locales.added_to_account_successfully}`, $Locales.success, "user");
           safeCloseModal('addUser');
           fetchAccounts();
         } else {
           // Handle specific error messages
-          let errorMessage = "Failed to add user to account";
+          let errorMessage = $Locales.failed_add_user;
           
           if (result.message) {
             if (result.message.includes("target_player_not_found") || result.message.includes("not found")) {
-              errorMessage = "Player not found or is offline. Only online players can be added to accounts.";
+              errorMessage = $Locales.player_not_found_offline;
             } else if (result.message.includes("cannot_add_self")) {
-              errorMessage = "You cannot add yourself to the account.";
+                              errorMessage = $Locales.cannot_add_yourself;
             } else if (result.message.includes("user_already_in_account")) {
-              errorMessage = "This player is already added to the account.";
+                              errorMessage = $Locales.player_already_added;
             } else {
               errorMessage = result.message;
             }
@@ -323,16 +323,16 @@
           console.error("Add user failed:", result);
         }
       } else {
-        Notify("Failed to add user to account - Invalid response", $Locales.error, "user");
+        Notify($Locales.failed_add_user_invalid_response, $Locales.error, "user");
         console.error("Invalid response:", result);
       }
     } catch (error) {
       console.error("Add user error:", error);
       
       if (error.message === 'Request timeout') {
-        Notify("Request timed out. The player might be offline or unreachable.", $Locales.error, "user");
+        Notify($Locales.request_timed_out, $Locales.error, "user");
       } else {
-        Notify("Failed to add user to account", $Locales.error, "user");
+        Notify($Locales.failed_add_user, $Locales.error, "user");
       }
       
       // Ensure modal stays responsive even on error
@@ -362,16 +362,16 @@
       console.log("Remove user result:", result); // Debug log
 
       if (result && result.success) {
-        Notify(`${$selectedUserToRemove.name} removed from account successfully!`, $Locales.success, "user");
+        Notify(`${$selectedUserToRemove.name} ${$Locales.removed_from_account_successfully}`, $Locales.success, "user");
         safeCloseModal('removeUser');
         fetchAccounts();
       } else {
-        Notify("Failed to remove user from account", $Locales.error, "user");
+        Notify($Locales.failed_remove_user, $Locales.error, "user");
         console.error("Remove user failed:", result);
       }
     } catch (error) {
       console.error("Remove user error:", error);
-      Notify("Failed to remove user from account", $Locales.error, "user");
+      Notify($Locales.failed_remove_user, $Locales.error, "user");
       safeCloseModal('removeUser');
     }
   }
@@ -523,7 +523,7 @@
       fetchAccounts();
     } catch (error) {
       console.error("Error in initial fetchAccounts:", error);
-      Notify("Failed to load accounts", $Locales.error, "user");
+      Notify($Locales.failed_load_accounts, $Locales.error, "user");
     }
     
     // Add keydown event listener
@@ -541,14 +541,14 @@
   <!-- Page Header -->
   <div class="flex items-center justify-between mb-8">
     <div>
-      <h1 class="text-3xl font-bold text-white mb-2">Accounts</h1>
-      <p class="text-white/60">Manage your bank accounts and savings</p>
+      <h1 class="text-3xl font-bold text-white mb-2">{$Locales.accounts}</h1>
+      <p class="text-white/60">{$Locales.manage_bank_accounts_savings}</p>
       </div>
     <div class="flex items-center space-x-4">
       <div class="modern-card px-4 py-2">
         <div class="flex items-center space-x-2">
           <i class="fas fa-piggy-bank text-green-400"></i>
-          <span class="text-sm text-white/80">{$accounts.length} Accounts</span>
+          <span class="text-sm text-white/80">{$accounts.length} {$Locales.accounts}</span>
           </div>
       </div>
       <button
@@ -556,7 +556,7 @@
         on:click={() => showCreateModal.set(true)}
       >
         <i class="fas fa-plus"></i>
-        <span>Create Account</span>
+        <span>{$Locales.create_account}</span>
       </button>
     </div>
   </div>
@@ -567,15 +567,15 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-4">
           <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
-            <i class="fas fa-university text-blue-400 text-lg"></i>
+            <i class="fas fa-piggy-bank text-blue-400 text-lg"></i>
           </div>
           <div>
-            <h3 class="text-xl font-semibold text-white">Primary Account</h3>
-            <p class="text-white/60 text-sm">Main checking account</p>
+            <h3 class="text-xl font-semibold text-white">{$Locales.primary_account}</h3>
+            <p class="text-white/60 text-sm">{$Locales.main_checking_account}</p>
 </div>
         </div>
         <div class="text-right">
-          <p class="text-sm text-white/60">Current Balance</p>
+          <p class="text-sm text-white/60">{$Locales.current_balance}</p>
           <p class="text-2xl font-bold text-white">
             {#if $bankBalance >= 1000000}
               ${($bankBalance / 1000000).toFixed(1)}M
@@ -621,21 +621,21 @@
                 <div class="flex items-center space-x-2 mb-1">
                   <h3 class="text-white font-semibold truncate">{account.name}</h3>
                   {#if account.isActive}
-                    <span class="px-2 py-1 bg-green-500/20 rounded-full text-green-400 text-xs">Active</span>
+                    <span class="px-2 py-1 bg-green-500/20 rounded-full text-green-400 text-xs">{$Locales.active}</span>
                   {:else}
-                    <span class="px-2 py-1 bg-red-500/20 rounded-full text-red-400 text-xs">Inactive</span>
+                    <span class="px-2 py-1 bg-red-500/20 rounded-full text-red-400 text-xs">{$Locales.inactive}</span>
                   {/if}
                 </div>
                 <div class="flex items-center space-x-4 text-sm text-white/60">
-                  <span class="capitalize">{account.type} Account</span>
-                  <span>Created {formatDate(account.created)}</span>
+                  <span class="capitalize">{account.type} {$Locales.account_suffix}</span>
+                  <span>{$Locales.created} {formatDate(account.created)}</span>
                 </div>
               </div>
             </div>
 
             <div class="flex items-center space-x-4">
               <div class="text-right">
-                <p class="text-sm text-white/60">Balance</p>
+                <p class="text-sm text-white/60">{$Locales.balance}</p>
                 <p class="text-xl font-bold text-white">
                   {#if account.balance >= 1000000}
                     ${(account.balance / 1000000).toFixed(1)}M
@@ -650,27 +650,27 @@
               <div class="flex space-x-2">
                 <button
                   class="p-2 bg-blue-500/20 rounded-lg text-blue-400 hover:bg-blue-500/30 transition-colors"
-                  title="View Details"
+                  title={$Locales.view_details}
                 >
                   <i class="fas fa-eye"></i>
                 </button>
                 <button
                   class="p-2 bg-green-500/20 rounded-lg text-green-400 hover:bg-green-500/30 transition-colors"
-                  title="Deposit Money"
+                  title={$Locales.deposit_money}
                   on:click={() => openDepositModal(account)}
                 >
                   <i class="fas fa-plus"></i>
                 </button>
                 <button
                   class="p-2 bg-orange-500/20 rounded-lg text-orange-400 hover:bg-orange-500/30 transition-colors"
-                  title="Withdraw Money"
+                  title={$Locales.withdraw_money}
                   on:click={() => openWithdrawModal(account)}
                 >
                   <i class="fas fa-minus"></i>
                 </button>
                 <button
                   class="p-2 bg-purple-500/20 rounded-lg text-purple-400 hover:bg-purple-500/30 transition-colors"
-                  title="Add User"
+                  title={$Locales.add_user}
                   on:click={() => openAddUserModal(account)}
                 >
                   <i class="fas fa-user-plus"></i>
@@ -678,7 +678,7 @@
                 {#if account.users && account.users.length > 0}
                   <button
                     class="p-2 bg-yellow-500/20 rounded-lg text-yellow-400 hover:bg-yellow-500/30 transition-colors"
-                    title="Remove User"
+                    title={$Locales.remove_user}
                     on:click={() => openRemoveUserModal(account)}
                   >
                     <i class="fas fa-user-minus"></i>
@@ -686,7 +686,7 @@
                 {/if}
                 <button
                   class="p-2 bg-red-500/20 rounded-lg text-red-400 hover:bg-red-500/30 transition-colors"
-                  title="Delete Account"
+                  title={$Locales.delete_account}
                   on:click={() => deleteAccount(account.id)}
                 >
                   <i class="fas fa-trash"></i>
@@ -699,7 +699,7 @@
           {#if account.users && account.users.length > 0}
             <div class="mt-3 pt-3 border-t border-white/10">
               <div class="text-white/80 text-xs font-medium mb-2">
-                Shared with ({account.users.length}):
+                {$Locales.shared_with} ({account.users.length}):
               </div>
               <div class="flex flex-wrap gap-1">
                 {#each account.users as user}
@@ -715,9 +715,9 @@
           {#if account.owner}
             <div class="mt-2 text-xs text-white/60">
               {#if account.owner.state}
-                <i class="fas fa-crown text-yellow-400 mr-1"></i>Owner: You
+                <i class="fas fa-crown text-yellow-400 mr-1"></i>{$Locales.owner_you}
               {:else}
-                <i class="fas fa-users text-blue-400 mr-1"></i>Shared Account
+                                  <i class="fas fa-users text-blue-400 mr-1"></i>{$Locales.shared_account}
               {/if}
             </div>
           {/if}
@@ -726,14 +726,14 @@
     {:else}
       <div class="modern-card p-12 text-center">
         <i class="fas fa-piggy-bank text-white/30 text-5xl mb-4"></i>
-        <h3 class="text-xl font-semibold text-white mb-2">No Additional Accounts</h3>
-        <p class="text-white/60 mb-6">Create a savings or business account to get started</p>
+        <h3 class="text-xl font-semibold text-white mb-2">{$Locales.no_additional_accounts}</h3>
+        <p class="text-white/60 mb-6">{$Locales.create_savings_business_account}</p>
         <button
           class="action-button"
           on:click={() => showCreateModal.set(true)}
         >
           <i class="fas fa-plus mr-2"></i>
-          Create Your First Account
+          {$Locales.create_your_first_account}
         </button>
       </div>
     {/if}
@@ -749,7 +749,7 @@
       out:fade={{ duration: 250 }}
     >
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-white">Create New Account</h2>
+        <h2 class="text-2xl font-bold text-white">{$Locales.create_new_account}</h2>
         <button
           class="p-2 hover:bg-white/10 rounded-lg transition-colors"
           on:click={() => showCreateModal.set(false)}
@@ -760,24 +760,24 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Account Name</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.account_name}</label>
           <input
             type="text"
             class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-blue-500/50 transition-colors"
-            placeholder="Enter account name"
+            placeholder={$Locales.enter_account_name}
             bind:value={$newAccountName}
           />
         </div>
 
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Account Type</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.account_type}</label>
           <select
             class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-blue-500/50 transition-colors"
             bind:value={$newAccountType}
           >
-            <option value="savings">Savings Account</option>
-            <option value="business">Business Account</option>
-            <option value="investment">Investment Account</option>
+            <option value="savings">{$Locales.savings_account}</option>
+            <option value="business">{$Locales.business_account}</option>
+            <option value="investment">{$Locales.investment_account}</option>
           </select>
         </div>
       </div>
@@ -787,14 +787,14 @@
           class="flex-1 px-4 py-3 bg-white/10 rounded-xl text-white hover:bg-white/20 transition-colors"
           on:click={() => showCreateModal.set(false)}
         >
-          Cancel
+          {$Locales.cancel}
         </button>
         <button
           class="flex-1 action-button"
           on:click={createAccount}
           disabled={!$newAccountName.trim()}
         >
-          Create Account
+          {$Locales.create_account}
         </button>
       </div>
     </div>
@@ -810,7 +810,7 @@
       out:fade={{ duration: 250 }}
     >
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-white">Deposit Money</h2>
+        <h2 class="text-2xl font-bold text-white">{$Locales.deposit_money}</h2>
         <button
           class="p-2 hover:bg-white/10 rounded-lg transition-colors"
           on:click={() => showDepositModal.set(false)}
@@ -821,23 +821,23 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Account</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.account}</label>
           <div class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10">
             {$selectedAccountForDeposit.name}
           </div>
         </div>
 
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Amount to Deposit</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.amount_to_deposit}</label>
           <input
             type="number"
             class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-green-500/50 transition-colors"
-            placeholder="Enter amount"
+            placeholder={$Locales.enter_amount}
             bind:value={$depositAmount}
             min="1"
             max={$bankBalance}
           />
-          <p class="text-white/60 text-sm mt-2">Available: ${$bankBalance.toLocaleString()}</p>
+          <p class="text-white/60 text-sm mt-2">{$Locales.available}: R$ {$bankBalance.toLocaleString()}</p>
         </div>
       </div>
 
@@ -846,14 +846,14 @@
           class="flex-1 px-4 py-3 bg-white/10 rounded-xl text-white hover:bg-white/20 transition-colors"
           on:click={() => showDepositModal.set(false)}
         >
-          Cancel
+          {$Locales.cancel}
         </button>
         <button
           class="flex-1 action-button bg-green-500/10 border-green-500/30 hover:bg-green-500/20"
           on:click={depositToAccount}
           disabled={$depositAmount <= 0 || $depositAmount > $bankBalance}
         >
-          Deposit
+          {$Locales.deposit}
         </button>
       </div>
     </div>
@@ -869,7 +869,7 @@
       out:fade={{ duration: 250 }}
     >
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-white">Add User to Account</h2>
+        <h2 class="text-2xl font-bold text-white">{$Locales.add_user_to_account}</h2>
         <button
           class="p-2 hover:bg-white/10 rounded-lg transition-colors"
           on:click={closeAddUserModal}
@@ -881,18 +881,18 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Account</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.account}</label>
           <div class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10">
             {$selectedAccountForUser.name}
           </div>
         </div>
 
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Player ID</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.player_id}</label>
           <input
             type="number"
             class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500/50 transition-colors"
-            placeholder="Enter player server ID (e.g., 1, 2, 3...)"
+            placeholder={$Locales.enter_player_server_id}
             bind:value={$userIdToAdd}
             min="1"
             max="9999"
@@ -905,9 +905,9 @@
           />
           <p class="text-white/60 text-sm mt-2">
             {#if $userIdToAdd && (isNaN(parseInt(String($userIdToAdd))) || parseInt(String($userIdToAdd)) <= 0)}
-              <span class="text-red-400">⚠️ Please enter a valid numeric player ID</span>
+                              <span class="text-red-400">⚠️ {$Locales.please_enter_valid_numeric_player_id}</span>
             {:else}
-              Enter the server ID of the player you want to add (player must be online)
+                              {$Locales.enter_server_id_instruction}
             {/if}
           </p>
         </div>
@@ -919,7 +919,7 @@
           on:click={closeAddUserModal}
           disabled={$isAddingUser}
         >
-          Cancel
+          {$Locales.cancel}
         </button>
         <button
           class="flex-1 action-button bg-purple-500/10 border-purple-500/30 hover:bg-purple-500/20"
@@ -928,9 +928,9 @@
         >
           {#if $isAddingUser}
             <i class="fas fa-spinner fa-spin mr-2"></i>
-            Adding...
+            {$Locales.adding}
           {:else}
-            Add User
+            {$Locales.add_user}
           {/if}
         </button>
       </div>
@@ -947,7 +947,7 @@
       out:fade={{ duration: 250 }}
     >
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-white">Withdraw Money</h2>
+        <h2 class="text-2xl font-bold text-white">{$Locales.withdraw_money}</h2>
         <button
           class="p-2 hover:bg-white/10 rounded-lg transition-colors"
           on:click={() => showWithdrawModal.set(false)}
@@ -958,23 +958,23 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Account</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.account}</label>
           <div class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10">
             {$selectedAccountForWithdraw.name}
           </div>
         </div>
 
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Amount to Withdraw</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.amount_to_withdraw}</label>
           <input
             type="number"
             class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-orange-500/50 transition-colors"
-            placeholder="Enter amount"
+            placeholder={$Locales.enter_amount}
             bind:value={$withdrawAmount}
             min="1"
             max={$selectedAccountForWithdraw.balance}
           />
-          <p class="text-white/60 text-sm mt-2">Available: ${$selectedAccountForWithdraw.balance.toLocaleString()}</p>
+          <p class="text-white/60 text-sm mt-2">{$Locales.available}: R$ {$selectedAccountForWithdraw.balance.toLocaleString()}</p>
         </div>
       </div>
 
@@ -983,14 +983,14 @@
           class="flex-1 px-4 py-3 bg-white/10 rounded-xl text-white hover:bg-white/20 transition-colors"
           on:click={() => showWithdrawModal.set(false)}
         >
-          Cancel
+          {$Locales.cancel}
         </button>
         <button
           class="flex-1 action-button bg-orange-500/10 border-orange-500/30 hover:bg-orange-500/20"
           on:click={withdrawFromAccount}
           disabled={$withdrawAmount <= 0 || $withdrawAmount > $selectedAccountForWithdraw.balance}
         >
-          Withdraw
+          {$Locales.withdraw}
         </button>
       </div>
     </div>
@@ -1006,7 +1006,7 @@
       out:fade={{ duration: 250 }}
     >
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-white">Remove User from Account</h2>
+        <h2 class="text-2xl font-bold text-white">{$Locales.remove_user_from_account}</h2>
         <button
           class="p-2 hover:bg-white/10 rounded-lg transition-colors"
           on:click={() => safeCloseModal('removeUser')}
@@ -1017,14 +1017,14 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Account</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.account}</label>
           <div class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10">
             {$selectedAccountForRemove.name}
           </div>
         </div>
 
         <div>
-          <label class="block text-white/80 text-sm font-medium mb-2">Select User to Remove</label>
+          <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.select_user_to_remove}</label>
           {#if $selectedAccountForRemove.users && $selectedAccountForRemove.users.length > 0}
             <div class="space-y-2">
               {#each $selectedAccountForRemove.users as user}
@@ -1044,7 +1044,7 @@
             </div>
           {:else}
             <div class="text-white/60 text-center py-4">
-              No users to remove from this account
+              {$Locales.no_users_to_remove}
             </div>
           {/if}
         </div>
@@ -1055,7 +1055,7 @@
           class="flex-1 px-4 py-3 bg-white/10 rounded-xl text-white hover:bg-white/20 transition-colors"
           on:click={() => safeCloseModal('removeUser')}
         >
-          Cancel
+          {$Locales.cancel}
         </button>
         <button
           class="flex-1 action-button bg-red-500/10 border-red-500/30 hover:bg-red-500/20"
@@ -1063,7 +1063,7 @@
           disabled={!$selectedUserToRemove}
         >
           <i class="fas fa-user-minus mr-2"></i>
-          Remove User
+          {$Locales.remove_user}
         </button>
       </div>
     </div>
