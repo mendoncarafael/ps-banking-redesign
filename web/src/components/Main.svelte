@@ -120,7 +120,7 @@
         <!-- Header -->
         <div class="p-6 border-b border-white/10">
           <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center">
+            <div class="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center">
               <i class="fas fa-piggy-bank text-white text-xl"></i>
             </div>
             <div>

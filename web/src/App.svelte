@@ -5,6 +5,23 @@
   import { slide, fade } from "svelte/transition";
   import { notifications } from "../src/store/data";
   import { visibility } from "../src/store/stores";
+  import { onMount } from "svelte";
+  import { fetchNui } from "./utils/fetchNui";
+  import { applyColorConfig, isEnvBrowser } from "./utils/misc";
+
+  // Load color configuration on mount
+  onMount(async () => {
+    if (!isEnvBrowser()) {
+      try {
+        const colorConfig = await fetchNui("ps-banking:client:getColorConfig");
+        if (colorConfig && colorConfig.color) {
+          applyColorConfig(colorConfig.color);
+        }
+      } catch (error) {
+        console.warn("Failed to load color configuration, using defaults:", error);
+      }
+    }
+  });
 
   debugData([
     {

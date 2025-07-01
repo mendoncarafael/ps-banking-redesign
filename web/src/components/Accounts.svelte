@@ -605,14 +605,14 @@
                 account.type === 'savings' 
                   ? 'bg-green-500/20' 
                   : account.type === 'business'
-                  ? 'bg-purple-500/20'
+                  ? 'bg-green-500/20'
                   : 'bg-orange-500/20'
               }`}>
                 <i class={`fas ${
                   account.type === 'savings' 
                     ? 'fa-piggy-bank text-green-400' 
                     : account.type === 'business'
-                    ? 'fa-briefcase text-purple-400'
+                    ? 'fa-briefcase text-green-400'
                     : 'fa-wallet text-orange-400'
                 } text-lg`}></i>
               </div>
@@ -669,7 +669,7 @@
                   <i class="fas fa-minus"></i>
                 </button>
                 <button
-                  class="p-2 bg-purple-500/20 rounded-lg text-purple-400 hover:bg-purple-500/30 transition-colors"
+                  class="p-2 bg-green-500/20 rounded-lg text-green-400 hover:bg-green-500/30 transition-colors"
                   title={$Locales.add_user}
                   on:click={() => openAddUserModal(account)}
                 >
@@ -703,7 +703,7 @@
               </div>
               <div class="flex flex-wrap gap-1">
                 {#each account.users as user}
-                  <span class="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-lg">
+                  <span class="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-lg">
                     <i class="fas fa-user mr-1"></i>{user.name}
                   </span>
                 {/each}
@@ -891,7 +891,7 @@
           <label class="block text-white/80 text-sm font-medium mb-2">{$Locales.player_id}</label>
           <input
             type="number"
-            class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500/50 transition-colors"
+            class="w-full bg-white/5 text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-green-500/50 transition-colors"
             placeholder={$Locales.enter_player_server_id}
             bind:value={$userIdToAdd}
             min="1"
@@ -922,7 +922,7 @@
           {$Locales.cancel}
         </button>
         <button
-          class="flex-1 action-button bg-purple-500/10 border-purple-500/30 hover:bg-purple-500/20"
+          class="flex-1 action-button bg-green-500/10 border-green-500/30 hover:bg-green-500/20"
           on:click={addUserToAccount}
           disabled={!String($userIdToAdd || '').trim() || $isAddingUser}
         >

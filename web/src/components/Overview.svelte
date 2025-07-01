@@ -336,8 +336,8 @@
     <div class="modern-card p-6">
       <div class="flex items-center justify-between mb-6">
         <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-            <i class="fas fa-calendar-week text-purple-400"></i>
+          <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+            <i class="fas fa-calendar-week text-green-400"></i>
           </div>
           <h3 class="text-xl font-semibold text-white">{$Locales.weekly_summary}</h3>
         </div>

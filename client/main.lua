@@ -13,6 +13,13 @@ RegisterNUICallback("ps-banking:client:phoneOption", function(_, cb)
     cb(Config.LBPhone)
 end)
 
+RegisterNUICallback("ps-banking:client:getColorConfig", function(_, cb)
+    local inventoryColor = GetConvar("inventory:color", "#43c42f") -- Default to green-500 if not set
+    cb({
+        color = inventoryColor
+    })
+end)
+
 -- Banks
 RegisterNetEvent('ps-banking:client:open:bank')
 AddEventHandler('ps-banking:client:open:bank', function()
